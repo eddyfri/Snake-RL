@@ -9,10 +9,7 @@ import tensorflow as tf
 import random
 
 from tqdm import trange
-from dqn import DQNAgent
 from ddqn import DoubleDQNAgent
-from a2c import A2CAgent
-
 
 tf.random.set_seed(0)
 random.seed(0)
@@ -109,69 +106,39 @@ def evaluate(agent, env, iterations=1000):
     return rewards_history, wall_hits, fruits_eaten
 
 def plots(rewards, fruits_eaten, wall_hits):
-    rewards_history_dqn, rewards_history_ddqn, rewards_history_a2c, heuristic_rewards, random_rewards = rewards
-    fruits_eaten_loaded_dqn, fruits_eaten_loaded_ddqn, fruits_eaten_loaded_a2c, fruits_eaten_heuristic = fruits_eaten
-    wall_hits_dqn, wall_hits_ddqn, wall_hits_a2c, wall_hits_heuristic = wall_hits
+    rewards_history_ddqn, heuristic_rewards, random_rewards = rewards
+    fruits_eaten_loaded_ddqn, fruits_eaten_heuristic = fruits_eaten
+    wall_hits_ddqn, wall_hits_heuristic = wall_hits
 
     # PLOTS
     # Plot average rewards
     plt.figure(figsize=(10, 6))
-    plt.bar(['DQN', 'DDQN', 'A2C', 'Heuristic', 'Random'], [np.mean(rewards_history_dqn), np.mean(rewards_history_ddqn), np.mean(rewards_history_a2c), np.mean(heuristic_rewards), np.mean(random_rewards)], color=['blue', 'orange', 'green', 'red', 'purple'])
+    plt.bar(['DDQN', 'Heuristic', 'Random'], [np.mean(rewards_history_ddqn), np.mean(heuristic_rewards), np.mean(random_rewards)], color=['blue', 'orange', 'green'])
     plt.ylabel('Average Reward')
-    plt.title('Average Rewards of DQN, DDQN, A2C, Heuristic, and Random')
+    plt.title('Average Rewards of DDQN, Heuristic, and Random')
     plt.grid(axis='y')
-    plt.savefig('plots/average_rewards_comparison.png')
     plt.show()
 
     # Plot average wall hits
     plt.figure(figsize=(10, 6))
-    plt.bar(['DQN', 'DDQN', 'A2C', 'Heuristic'], [np.mean(wall_hits_dqn), np.mean(wall_hits_ddqn), np.mean(wall_hits_a2c), np.mean(wall_hits_heuristic)], color=['blue', 'orange', 'green', 'red'])
+    plt.bar(['DDQN', 'Heuristic'], [np.mean(wall_hits_ddqn), np.mean(wall_hits_heuristic)], color=['blue', 'orange'])
     plt.ylabel('Average Wall Hits')
-    plt.title('Average Wall Hits of DQN, DDQN, A2C, and Heuristic')
+    plt.title('Average Wall Hits of DDQN and Heuristic')
     plt.grid(axis='y')
-    plt.savefig('plots/average_wall_hits_comparison.png')
     plt.show()
 
     # Plot average fruits eaten
     plt.figure(figsize=(10, 6))
-    plt.bar(['DQN', 'DDQN', 'A2C', 'Heuristic'], [np.mean(fruits_eaten_loaded_dqn), np.mean(fruits_eaten_loaded_ddqn), np.mean(fruits_eaten_loaded_a2c), np.mean(fruits_eaten_heuristic)], color=['blue', 'orange', 'green', 'red'])
+    plt.bar(['DDQN', 'Heuristic'], [np.mean(fruits_eaten_loaded_ddqn), np.mean(fruits_eaten_heuristic)], color=['blue', 'orange'])
     plt.ylabel('Average Fruits Eaten')
-    plt.title('Average Fruits Eaten of DQN, DDQN, A2C, and Heuristic')
+    plt.title('Average Fruits Eaten of DDQN and Heuristic')
     plt.grid(axis='y')
-    plt.savefig('plots/average_fruits_eaten_comparison.png')
-    plt.show()
-
-    # Plot images from training that are in plots folder
-    images = os.listdir('plots')
-    images = ["rewards.png", "fruits_eaten.png", "wall_hits.png"]
-    titles = ["Rewards", "Fruits Eaten", "Wall Hits"]
-    images.sort()
-    fig, axs = plt.subplots(1, len(images), figsize=(15, 5))
-    for i, img in enumerate(images):
-        img_path = os.path.join('plots', img)
-        image = plt.imread(img_path)
-        axs[i].imshow(image)
-        axs[i].axis('off')
-        axs[i].set_title(titles[i])
-    plt.tight_layout()
-    plt.savefig('plots/training_images.png')
     plt.show()
 
 if __name__ == "__main__":
     env_ = get_env()
     GAMMA = .9
     ITERATIONS = 5000
-    print("--- Evaluating DQN ---")
-    agent_dqn = DQNAgent(state_shape=env_.to_state().shape[1:], gamma=GAMMA, n_actions=4, epsilon_start=1., epsilon_end=0.05, epsilon_decay=0.9995, learning_rate=1e-4, target_update_freq=100)
-
-    agent_dqn.load_weights("weights/snake_dqn_weights.h5")
-    agent_dqn.epsilon = agent_dqn.epsilon_end
-
-    rewards_history_dqn, wall_hits_dqn, fruits_eaten_loaded_dqn = evaluate(agent_dqn, env_, iterations=ITERATIONS)
-
-    print(f"Avg Reward - DQN: {np.mean(rewards_history_dqn):.2f}")
-    print(f"Avg Wall Hits - DQN: {np.mean(wall_hits_dqn):.2f}")
-    print(f"Avg Fruits Eaten - DQN: {np.mean(fruits_eaten_loaded_dqn):.2f}")
 
     print("\n--- Evaluating DDQN ---")
     env_ = get_env()
@@ -183,17 +150,6 @@ if __name__ == "__main__":
     print(f"Avg Reward - DDQN: {np.mean(rewards_history_ddqn):.2f}")
     print(f"Avg Wall Hits - DDQN: {np.mean(wall_hits_ddqn):.2f}")
     print(f"Avg Fruits Eaten - DDQN: {np.mean(fruits_eaten_loaded_ddqn):.2f}")
-
-    print("\n--- Evaluating A2C ---")
-    env_ = get_env()
-    agent_a2c = A2CAgent(state_shape=env_.to_state().shape[1:], gamma=GAMMA, n_actions=4, learning_rate=5e-5, entropy_beta=0.0001)
-    agent_a2c.load_weights("weights/snake_a2c_weights.h5")
-
-    rewards_history_a2c, wall_hits_a2c, fruits_eaten_loaded_a2c = evaluate(agent_a2c, env_, iterations=ITERATIONS)
-
-    print(f"Avg Reward - A2C: {np.mean(rewards_history_a2c):.2f}")
-    print(f"Avg Wall Hits - A2C: {np.mean(wall_hits_a2c):.2f}")
-    print(f"Avg Fruits Eaten - A2C: {np.mean(fruits_eaten_loaded_a2c):.2f}")
 
     # Heuristic evaluation
     print("\n--- Evaluating Heuristic ---")
@@ -219,8 +175,8 @@ if __name__ == "__main__":
 
     print(f"Avg Reward - Random: {np.mean(random_rewards):.2f}")
 
-    rewards = [rewards_history_dqn, rewards_history_ddqn, rewards_history_a2c, heuristic_rewards, random_rewards]
-    fruits_eaten = [fruits_eaten_loaded_dqn, fruits_eaten_loaded_ddqn, fruits_eaten_loaded_a2c, fruits_eaten_heuristic]
-    wall_hits = [wall_hits_dqn, wall_hits_ddqn, wall_hits_a2c, wall_hits_heuristic]
+    rewards = [rewards_history_ddqn, heuristic_rewards, random_rewards]
+    fruits_eaten = [fruits_eaten_loaded_ddqn, fruits_eaten_heuristic]
+    wall_hits = [wall_hits_ddqn, wall_hits_heuristic]
 
     plots(rewards, fruits_eaten, wall_hits)

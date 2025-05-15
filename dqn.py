@@ -7,8 +7,6 @@ from collections import deque
 class DQN(tf.keras.Model):
     def __init__(self, input_dim, n_actions):
         super(DQN, self).__init__()
-        # self.conv1 = tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_dim)
-        # self.conv2 = tf.keras.layers.Conv2D(64, (3, 3), activation='relu')
         self.conv1 = tf.keras.layers.Conv2D(32, (3, 3), activation='relu', padding='valid')
         self.conv2 = tf.keras.layers.Conv2D(64, (3, 3), activation='relu', padding='valid')
         self.flatten = tf.keras.layers.Flatten()
