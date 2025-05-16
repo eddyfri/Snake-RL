@@ -33,9 +33,9 @@ def heuristic_policy(env):
     ACTIONS = [UP, RIGHT, DOWN, LEFT]
 
     DIRS = {
-        UP: (-1, 0),
+        UP: (1, 0),
         RIGHT: (0, 1),
-        DOWN: (1, 0),
+        DOWN: (-1, 0),
         LEFT: (0, -1)
     }
 
@@ -72,7 +72,7 @@ def heuristic_evaluate(env, iterations=1000):
     fruits_eaten_heuristic = []
     wall_hits_heuristic = []
 
-    for iteration in trange(iterations):
+    for _ in trange(iterations):
         actions = heuristic_policy(env)
         rewards = env.move(actions)
         wall_hits_count = np.sum(rewards == env.HIT_WALL_REWARD)
@@ -80,10 +80,6 @@ def heuristic_evaluate(env, iterations=1000):
         fruits_eaten_count = np.sum(rewards == env.FRUIT_REWARD)
         fruits_eaten_heuristic.append(fruits_eaten_count)
         heuristic_rewards.append(np.mean(rewards))
-        dones = np.isin(rewards.numpy().flatten(), [env.WIN_REWARD, env.HIT_WALL_REWARD, env.ATE_HIMSELF_REWARD])
-
-        if np.sum(dones) > actions.shape[0] / 2:
-            env = get_env() # if all the boards are done, reset the environment
     
     return heuristic_rewards, wall_hits_heuristic, fruits_eaten_heuristic
 
@@ -92,7 +88,7 @@ def evaluate(agent, env, iterations=1000):
     wall_hits = []
     fruits_eaten = []
 
-    for iteration in trange(iterations):
+    for _ in trange(iterations):
         state = tf.constant(env.to_state())
         actions = agent.select_action(state)
         rewards = env.move(actions)
