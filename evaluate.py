@@ -134,7 +134,7 @@ def plots(rewards, fruits_eaten, wall_hits):
 if __name__ == "__main__":
     env_ = get_env()
     GAMMA = .9
-    ITERATIONS = 5000
+    ITERATIONS = 100
 
     print("\n--- Evaluating DDQN ---")
     env_ = get_env()
