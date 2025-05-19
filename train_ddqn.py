@@ -1,6 +1,8 @@
 import environments_fully_observable
 import environments_partially_observable
 import numpy as np
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 from ddqn import DoubleDQNAgent
 from training import training
@@ -22,6 +24,7 @@ if __name__ == "__main__":
     env = get_env()
     # or env = get_env(partially_observable=True) if you want to test the partially observable environment
     agent = DoubleDQNAgent(state_shape=env.to_state().shape[1:], n_actions=4, buffer_size=10000, batch_size=128, epsilon_start=1., epsilon_end=0.1, epsilon_decay=0.9995, learning_rate=1e-4, gamma=0.9, target_update_freq=100)
+    print("Starting Double DQN training...")
     rewards_history_ddqn, wall_hits_ddqn, fruits_eaten_ddqn, _ = training(ITERATIONS, env, agent, save_weights=True, save_path="weights/", file_name="snake_ddqn_weights.h5")
 
     print("Double DQN training completed.")

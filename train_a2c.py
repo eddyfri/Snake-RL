@@ -1,6 +1,8 @@
 import environments_fully_observable
 import environments_partially_observable
 import numpy as np
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 from a2c import A2CAgent
 from training import training
@@ -22,6 +24,7 @@ if __name__ == "__main__":
     env = get_env()
     # or env = get_env(partially_observable=True) if you want to test the partially observable environment
     agent = A2CAgent(state_shape=env.to_state().shape[1:], n_actions=4, gamma=0.9, learning_rate=5e-5, entropy_beta=0.0001)
+    print("Starting A2C training...")
     rewards_history_ac, wall_hits_ac, fruits_eaten_ac, _ = training(ITERATIONS, env, agent, save_weights=True, save_path="weights/", file_name="snake_a2c_weights.h5")
 
     print("A2C training completed.")
