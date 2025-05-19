@@ -58,7 +58,7 @@ class A2CAgent:
 
             advantages = returns - values.numpy()
 
-            advantages = (advantages - np.mean(advantages)) / (np.std(advantages) + 1e-8) # normalize advantages
+            advantages = (advantages - np.mean(advantages)) / (np.std(advantages) + 1e-8) # normalize advantages, 1e-8 to avoid division by zero
 
             action_masks = tf.one_hot(actions.flatten(), self.n_actions)
             log_probs = tf.nn.log_softmax(logits)
