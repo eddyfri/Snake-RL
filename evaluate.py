@@ -10,6 +10,7 @@ import random
 
 from tqdm import trange
 from ddqn import DoubleDQNAgent
+from baseline import heuristic_policy
 
 tf.random.set_seed(0)
 random.seed(0)
@@ -27,45 +28,6 @@ def get_env(n=1000, partially_observable=False):
         e = environments_fully_observable.OriginalSnakeEnvironment(n, size)
 
     return e
-
-def heuristic_policy(env):
-    UP, RIGHT, DOWN, LEFT = 0, 1, 2, 3
-    ACTIONS = [UP, RIGHT, DOWN, LEFT]
-
-    DIRS = {
-        UP: (1, 0),
-        RIGHT: (0, 1),
-        DOWN: (-1, 0),
-        LEFT: (0, -1)
-    }
-
-    boards = env.boards
-    n_boards, board_size, _ = boards.shape
-    actions = []
-
-    for i in range(n_boards):
-        board = boards[i]
-        head = tuple(map(int, np.argwhere(board == env.HEAD)[0]))
-        fruit = tuple(map(int, np.argwhere(board == env.FRUIT)[0]))
-        candidates = []
-        for action in ACTIONS:
-            dy, dx = DIRS[action]
-            next_pos = (head[0] + dy, head[1] + dx)
-
-            if(0 <= next_pos[0] < board_size) and (0 <= next_pos[1] < board_size):
-                target_cell = board[next_pos]
-                if target_cell != env.WALL and target_cell != env.BODY:
-                    distance = abs(next_pos[0] - fruit[0]) + abs(next_pos[1] - fruit[1])
-                    candidates.append((action, distance))
-        
-        if not candidates:
-            action = np.random.choice(ACTIONS)
-        else:
-            candidates.sort(key=lambda x: x[1])
-            action = candidates[0][0]
-        actions.append(action)
-    
-    return tf.convert_to_tensor(actions, dtype=tf.int32)[:, None]
 
 def heuristic_evaluate(env, iterations=1000):
     heuristic_rewards = []
