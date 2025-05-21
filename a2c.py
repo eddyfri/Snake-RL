@@ -1,6 +1,9 @@
 import numpy as np
 import tensorflow as tf
 
+tf.random.set_seed(0)
+np.random.seed(0)
+
 class A2C(tf.keras.Model):
     def __init__(self, input_dim, n_actions):
         super(A2C, self).__init__()

@@ -4,6 +4,10 @@ import random
 import tensorflow as tf
 from collections import deque
 
+tf.random.set_seed(0)
+np.random.seed(0)
+random.seed(0)
+
 class DQN(tf.keras.Model):
     def __init__(self, input_dim, n_actions):
         super(DQN, self).__init__()

@@ -1,7 +1,6 @@
 import environments_fully_observable
 import environments_partially_observable
 import matplotlib.pyplot as plt
-import numpy as np
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 

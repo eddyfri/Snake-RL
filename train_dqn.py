@@ -1,11 +1,9 @@
 import environments_fully_observable
 import environments_partially_observable
 import matplotlib.pyplot as plt
-import numpy as np
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-np.random.seed(0)
 
 from dqn import DQNAgent
 from training import training

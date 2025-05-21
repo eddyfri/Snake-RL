@@ -1,6 +1,9 @@
 import numpy as np
 import tensorflow as tf
 
+tf.random.set_seed(0)
+np.random.seed(0)
+
 def heuristic_policy(env):
     """
     Heuristic policy for the Snake game.
