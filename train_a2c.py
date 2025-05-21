@@ -1,5 +1,6 @@
 import environments_fully_observable
 import environments_partially_observable
+import matplotlib.pyplot as plt
 import numpy as np
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -29,8 +30,30 @@ if __name__ == "__main__":
 
     print("A2C training completed.")
 
-    # Results
-    print("A2C training results:")
-    print(f"Average rewards: {np.mean(rewards_history_ac)}")
-    print(f"Average wall hits: {np.mean(wall_hits_ac)}")
-    print(f"Average fruits eaten: {np.mean(fruits_eaten_ac)}")
+    # Results plotting
+    plt.figure(figsize=(12, 6))
+    plt.plot(rewards_history_ac, label='A2C Rewards', color='blue')
+    plt.title('A2C Training Rewards')
+    plt.xlabel('Iterations')
+    plt.ylabel('Average Reward')
+    plt.legend()
+    plt.grid()
+    plt.show()
+
+    plt.figure(figsize=(12, 6))
+    plt.plot(wall_hits_ac, label='A2C Wall Hits', color='red')
+    plt.title('A2C Training Wall Hits')
+    plt.xlabel('Iterations')
+    plt.ylabel('Wall Hits')
+    plt.legend()
+    plt.grid()
+    plt.show()
+
+    plt.figure(figsize=(12, 6))
+    plt.plot(fruits_eaten_ac, label='A2C Fruits Eaten', color='green')
+    plt.title('A2C Training Fruits Eaten')
+    plt.xlabel('Iterations')
+    plt.ylabel('Fruits Eaten')
+    plt.legend()
+    plt.grid()
+    plt.show()

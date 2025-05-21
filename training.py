@@ -3,6 +3,9 @@ import os
 import tensorflow as tf
 from tqdm import trange
 
+np.random.seed(0)
+tf.random.set_seed(0)
+
 def training(iterations, env, agent, save_weights=True, save_path="weights/", file_name="weights.h5"):
     rewards_hist = []
     walls_hist = []

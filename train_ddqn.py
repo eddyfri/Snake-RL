@@ -1,5 +1,6 @@
 import environments_fully_observable
 import environments_partially_observable
+import matplotlib.pyplot as plt
 import numpy as np
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -29,8 +30,30 @@ if __name__ == "__main__":
 
     print("Double DQN training completed.")
 
-    # Results
-    print("Double DQN training results:")
-    print(f"Average rewards: {np.mean(rewards_history_ddqn)}")
-    print(f"Average wall hits: {np.mean(wall_hits_ddqn)}")
-    print(f"Average fruits eaten: {np.mean(fruits_eaten_ddqn)}")
+    # Results plotting
+    plt.figure(figsize=(12, 6))
+    plt.plot(rewards_history_ddqn, label='DDQN Rewards', color='blue')
+    plt.title('DDQN Training Rewards')
+    plt.xlabel('Iterations')
+    plt.ylabel('Average Reward')
+    plt.legend()
+    plt.grid()
+    plt.show()
+
+    plt.figure(figsize=(12, 6))
+    plt.plot(wall_hits_ddqn, label='DDQN Wall Hits', color='red')
+    plt.title('DDQN Training Wall Hits')
+    plt.xlabel('Iterations')
+    plt.ylabel('Wall Hits')
+    plt.legend()
+    plt.grid()
+    plt.show()
+
+    plt.figure(figsize=(12, 6))
+    plt.plot(fruits_eaten_ddqn, label='DDQN Fruits Eaten', color='green')
+    plt.title('DDQN Training Fruits Eaten')
+    plt.xlabel('Iterations')
+    plt.ylabel('Fruits Eaten')
+    plt.legend()
+    plt.grid()
+    plt.show()

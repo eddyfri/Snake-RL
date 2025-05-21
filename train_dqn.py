@@ -1,8 +1,11 @@
 import environments_fully_observable
 import environments_partially_observable
+import matplotlib.pyplot as plt
 import numpy as np
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+np.random.seed(0)
 
 from dqn import DQNAgent
 from training import training
@@ -29,8 +32,31 @@ if __name__ == "__main__":
 
     print("DQN training completed.")
 
-    # Results
-    print("DQN training results:")
-    print(f"Average rewards: {np.mean(rewards_history_dqn)}")
-    print(f"Average wall hits: {np.mean(wall_hits_dqn)}")
-    print(f"Average fruits eaten: {np.mean(fruits_eaten_dqn)}")
+    # Results plotting
+    plt.figure(figsize=(12, 6))
+    plt.plot(rewards_history_dqn, label='DQN Rewards', color='blue')
+    plt.title('DQN Training Rewards')
+    plt.xlabel('Iterations')
+    plt.ylabel('Average Reward')
+    plt.legend()
+    plt.grid()
+    plt.show()
+
+    plt.figure(figsize=(12, 6))
+    plt.plot(wall_hits_dqn, label='DQN Wall Hits', color='red')
+    plt.title('DQN Training Wall Hits')
+    plt.xlabel('Iterations')
+    plt.ylabel('Wall Hits')
+    plt.legend()
+    plt.grid()
+    plt.show()
+    
+    plt.figure(figsize=(12, 6))
+    plt.plot(fruits_eaten_dqn, label='DQN Fruits Eaten', color='green')
+    plt.title('DQN Training Fruits Eaten')
+    plt.xlabel('Iterations')
+    plt.ylabel('Fruits Eaten')
+    plt.legend()
+    plt.grid()
+    plt.show()
+    
