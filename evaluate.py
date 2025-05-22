@@ -12,6 +12,9 @@ from tqdm import trange
 from ddqn import DoubleDQNAgent
 from baseline import heuristic_policy
 
+from dqn import DQNAgent
+from a2c import A2CAgent
+
 tf.random.set_seed(0)
 random.seed(0)
 np.random.seed(0)
@@ -100,7 +103,8 @@ if __name__ == "__main__":
 
     print("\n--- Evaluating DDQN ---")
     env_ = get_env()
-    agent_ddqn = DoubleDQNAgent(state_shape=env_.to_state().shape[1:], gamma=GAMMA, n_actions=4, epsilon_start=1., epsilon_end=0.05, epsilon_decay=0.9995, learning_rate=1e-4, target_update_freq=100)
+    agent_ddqn = DoubleDQNAgent(state_shape=env_.to_state().shape[1:], gamma=GAMMA, n_actions=4, epsilon_start=1., epsilon_end=0.0, epsilon_decay=0.9995, learning_rate=1e-4, target_update_freq=100)
+
     agent_ddqn.load_weights("weights/snake_ddqn_weights.h5")
     agent_ddqn.epsilon = agent_ddqn.epsilon_end
     rewards_history_ddqn, wall_hits_ddqn, fruits_eaten_loaded_ddqn = evaluate(agent_ddqn, env_, iterations=ITERATIONS)

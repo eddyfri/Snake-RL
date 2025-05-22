@@ -1,25 +1,26 @@
+
 --- Evaluating DQN ---
 Model weights loaded from weights/snake_dqn_weights.h5
-Avg Reward - DQN: 0.12
-Avg Wall Hits - DQN: 9.32
-Avg Fruits Eaten - DQN: 262.81
+Avg Reward - DQN: 0.13
+Avg Wall Hits - DQN: 2.72
+Avg Fruits Eaten - DQN: 275.18
 
 --- Evaluating DDQN ---
 Model weights loaded from weights/snake_ddqn_weights.h5
-Avg Reward - DDQN: 0.12
-Avg Wall Hits - DDQN: 9.38
-Avg Fruits Eaten - DDQN: 263.55
+Avg Reward - DDQN: 0.13
+Avg Wall Hits - DDQN: 2.48
+Avg Fruits Eaten - DDQN: 275.79
 
 --- Evaluating A2C ---
 Model weights loaded from weights/snake_a2c_weights.h5
 Avg Reward - A2C: 0.06
-Avg Wall Hits - A2C: 0.96
-Avg Fruits Eaten - A2C: 133.70
+Avg Wall Hits - A2C: 0.61
+Avg Fruits Eaten - A2C: 130.13
 
 --- Evaluating Heuristic ---
 Avg Reward - Heuristic: 0.11
-Avg Wall Hits - Heuristic: 13.12
-Avg Fruits Eaten - Heuristic: 230.00
+Avg Wall Hits - Heuristic: 10.06
+Avg Fruits Eaten - Heuristic: 237.52
 
 --- Evaluating Random ---
 Avg Reward - Random: -0.01
